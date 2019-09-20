@@ -1,6 +1,5 @@
 use .builtin
 use .builtin.Nat
-use .builtin.List
 use .LazyList
 
 naturals : LazyList Nat

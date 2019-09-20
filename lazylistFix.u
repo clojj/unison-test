@@ -1,0 +1,28 @@
+use .builtin.Nat
+
+
+type Fix f = Fix (f (Fix f))
+
+type F a r = Nil | Cons a (() -> r)
+
+type List a = L (Fix (F a))
+
+unwrap : List a -> Fix (F a)
+unwrap xs =
+  case xs of
+    List.L f -> f
+
+(:|) : a -> List a -> List a
+(:|) x xs =
+  let
+    ys = unwrap xs
+    xs' = F.Cons x 'ys
+    r = Fix.Fix xs'
+    -- in
+    L r
+
+> ls = 1 :| List.L (Fix.Fix Nil)
+
+> ls' = 2 :| ls
+
+> ls'' = 3 :| ls'

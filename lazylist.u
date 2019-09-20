@@ -1,21 +1,7 @@
+use .builtin
 use .builtin.Nat
-
--- TODO use these definitions
-
-type Fix f = Fix (f (Fix f))
-
-type F a r = Nil | Cons a (() -> r)
-
-type List a = List (Fix (F a))
-
-(:|) : a -> (() -> List a) -> List a
-n :| l =
-  let
-    xs = F.Cons n l
-    -- in
-    xs
-
----
+use .builtin.Int
+use .builtin.Optional
 
 type LazyList a = Nil | Cons a (() -> LazyList a)
 
@@ -50,4 +36,3 @@ goLazytake n xs rs =
                     None -> rs
             xs_ = lazytail xs
             goLazytake (n - (toInt 1)) xs_ rs_
-
