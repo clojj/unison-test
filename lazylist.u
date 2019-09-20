@@ -1,35 +1,25 @@
 use .builtin
 use .builtin.Nat
 use .builtin.Int
-use .builtin.List
 use .builtin.Optional
 
--- TODO How to utilise this type for lazy lists ? 
--- type Fix f = Fix (f (Fix f))
+type LazyList a = Nil | Cons a (() -> LazyList a)
 
--- TODO how to implement Haskell's fix in Unison ?
--- fix : (a -> a) -> (() -> a)
--- fix f = 
---   let x = '(f x)
---   x
-
-type LazyList a = LazyNil | LazyCons a (() -> LazyList a)
-
-lazycons : a -> (() -> LazyList a) -> LazyList a
-lazycons n l = 
-  LazyCons n l
+(:>) : a -> 'LazyList a -> LazyList a
+n :> l=
+    Cons n l
 
 lazyhead : LazyList a -> Optional a
 lazyhead xs =
   case xs of
-    LazyList.LazyCons f ts -> Some f
-    LazyList.LazyNil -> None
+    LazyList.Cons f ts -> Some f
+    LazyList.Nil -> None
 
 lazytail : LazyList a -> LazyList a
 lazytail xs =
   case xs of
-    LazyList.LazyCons f ts -> !ts
-    LazyList.LazyNil -> LazyList.LazyNil
+    LazyList.Cons f ts -> !ts
+    LazyList.Nil -> LazyList.Nil
 
 lazytake : Int -> LazyList Nat -> List Nat
 lazytake n xs =
@@ -46,4 +36,3 @@ goLazytake n xs rs =
                     None -> rs
             xs_ = lazytail xs
             goLazytake (n - (toInt 1)) xs_ rs_
-
