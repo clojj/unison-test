@@ -7,6 +7,6 @@ naturals : LazyList Nat
 naturals = goNaturals 0
 
 goNaturals : Nat -> LazyList Nat
-goNaturals n = lazycons n '(goNaturals (Nat.increment n))
+goNaturals n = n :> '(goNaturals (Nat.increment n))
 
-> lazytake (toInt 10) naturals
+> lazytake (toInt 5) naturals
