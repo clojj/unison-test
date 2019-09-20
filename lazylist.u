@@ -8,9 +8,12 @@ type F a r = Nil | Cons a (() -> r)
 
 type List a = List (Fix (F a))
 
-(:|) : a -> F a -> List a
+(:|) : a -> (() -> List a) -> List a
 n :| l =
-  List.List '(Fix (F.Cons n 'l))
+  let
+    xs = F.Cons n l
+    -- in
+    xs
 
 ---
 
