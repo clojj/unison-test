@@ -1,0 +1,12 @@
+use .builtin
+use .builtin.Nat
+use .builtin.List
+use .LazyList
+
+naturals : LazyList Nat
+naturals = goNaturals 0
+
+goNaturals : Nat -> LazyList Nat
+goNaturals n = lazycons n '(goNaturals (Nat.increment n))
+
+> lazytake (toInt 10) naturals
